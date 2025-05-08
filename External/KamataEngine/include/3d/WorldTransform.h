@@ -29,6 +29,8 @@ public:
 	// 親となるワールド変換へのポインタ
 	const WorldTransform* parent_ = nullptr;
 
+	void MakeAfinneMatrix();
+
 	WorldTransform() = default;
 	~WorldTransform() = default;
 
