@@ -4,6 +4,10 @@
 class Player {
 public:
 
+	Player();
+
+	~Player();
+
 	// 初期化
 	void Initialize(KamataEngine::Model*model,uint32_t textureHandle,KamataEngine::Camera*camera);
 

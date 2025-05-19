@@ -13,6 +13,16 @@ void GameScene::Initialize() {
 	// デバックカメラの生成
 	debugCamera_ = new DebugCamera(1280, 720);
 
+	skydome_ = new SkyDome();
+
+	player_ = new Player();
+
+	skydome_->Initialize(&camera_);
+
+	playerModel_ = Model::Create();
+
+	player_->Initialize(playerModel_, 0, &camera_);
+
 	// 要素数
 	const uint32_t kNumBlockVertical = 10;   // 縦
 	const uint32_t kNumBlockHorizontal = 20; // 横
@@ -57,6 +67,9 @@ GameScene::~GameScene() {
 	// デバックカメラの解放
 	delete debugCamera_;
 	debugCamera_ = nullptr;
+
+	delete skydome_;
+	delete player_;
 }
 
 void GameScene::Update() {
@@ -97,6 +110,9 @@ void GameScene::Update() {
 		// ビュープロダクション行列の更新と転送
 		camera_.UpdateMatrix();
 	}
+
+	skydome_->Update();
+	player_->Update();
 }
 
 void GameScene::Draw() {
@@ -116,6 +132,9 @@ void GameScene::Draw() {
 			modelBlock_->Draw(*worldTransformBlock, camera_);
 		}
 	}
+
+	skydome_->Draw();
+	player_->Draw();
 
 	// 3Dモデルの描画後処理
 	Model::PostDraw();

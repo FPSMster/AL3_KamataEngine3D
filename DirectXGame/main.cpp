@@ -1,13 +1,14 @@
 #include "GameScene.h"
 #include "KamataEngine.h"
 #include <Windows.h>
+#include"SkyDome.h"
 
 using namespace KamataEngine;
 
 // Windowsアプリでのエントリーポイント(main関数)
 int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int) {
 	// エンジンの初期化
-	KamataEngine::Initialize(L"GC2B_02_イノウエ_カズキ_AL3");
+	KamataEngine::Initialize(L"GC2C_04_クドウ_マコト_AL3");
 
 	// DirectXの機能取得
 	DirectXCommon* dxCommon = DirectXCommon::GetInstance();
