@@ -28,6 +28,6 @@ Skydome::~Skydome() {
 	worldTransform_ = nullptr;
 }
 
-void Skydome::Update() { worldTransform_->UpdateMatrix(); }
+void Skydome::Update() {}
 
 void Skydome::Draw() { model_->Draw(*worldTransform_, *camera_); }

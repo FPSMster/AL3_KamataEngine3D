@@ -111,7 +111,6 @@
     <ClCompile Include="MeMath.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="SkyDome.cpp" />
-    <ClCompile Include="worldTransformMatrix.cpp" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Resources\shaders\TerrainPS.hlsl">

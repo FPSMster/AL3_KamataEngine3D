@@ -1,11 +1,12 @@
 #include "GameScene.h"
+#include"MeMath.h"
 
 using namespace KamataEngine;
 using namespace MathUtility;
 
 void GameScene::Initialize() {
 	// 3dモデルの生成
-	modelBlock_ = Model::CreateFromOBJ("cube", true);
+	modelBlock_ = Model::CreateFromOBJ("block", true);
 
 	modelSkydome_ = Model::CreateFromOBJ("Skydome", true);
 
@@ -109,9 +110,8 @@ void GameScene::Update() {
 				continue; // nullチェック
 			}
 
-			// アフィン変換
-			worldTransformBlock->MakeAfinneMatrix();
-
+			// アフィン変換行列の作成
+			worldTransformBlock->matWorld_ = MakeAffineMatrix(worldTransformBlock->scale_, worldTransformBlock->rotation_, worldTransformBlock->translation_);
 			// 定数バッファに転送する
 			worldTransformBlock->TransferMatrix();
 		}
