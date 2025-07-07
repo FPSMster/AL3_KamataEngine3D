@@ -1,25 +1,33 @@
-#include "SkyDome.h"
+#include "Skydome.h"
+#define _USE_MATH_DEFINES
+#include "math.h"
 
 using namespace KamataEngine;
+using namespace MathUtility;
 
-SkyDome::SkyDome() {}
+void Skydome::Initialize(Model* model, Camera* camera) {
 
-SkyDome::~SkyDome() { 
-	delete model_;
-	model_ = nullptr;
-}
+	assert(model);
+	assert(camera);
 
-void SkyDome::Initialize(Camera* camera) {
-	/*assert(model);*/
-	model_ = Model::CreateFromOBJ("skydome", true);
+	model_ = model;
 	camera_ = camera;
-	worldTransform_.Initialize();
+
+	worldTransform_ = new WorldTransform();
+
+	worldTransform_->translation_.x = 0.0f;
+	worldTransform_->translation_.y = 0.0f;
+
+	worldTransform_->Initialize();
+
+	worldTransform_->rotation_.y = 90 * static_cast<float>(M_PI / 180);
 }
 
-void SkyDome::Update() { 
-	worldTransform_.TransferMatrix(); 
+Skydome::~Skydome() {
+	delete worldTransform_;
+	worldTransform_ = nullptr;
 }
 
-void SkyDome::Draw() {
-	model_->Draw(worldTransform_, *camera_); 
-}
+void Skydome::Update() { worldTransform_->UpdateMatrix(); }
+
+void Skydome::Draw() { model_->Draw(*worldTransform_, *camera_); }

@@ -5,7 +5,25 @@ using namespace MathUtility;
 
 void GameScene::Initialize() {
 	// 3dモデルの生成
-	modelBlock_ = Model::Create();
+	modelBlock_ = Model::CreateFromOBJ("cube", true);
+
+	modelSkydome_ = Model::CreateFromOBJ("Skydome", true);
+
+	modelPlayer_ = Model::CreateFromOBJ("player", true);
+
+	// skydomeの生成
+	skydome_ = new Skydome();
+
+	// skydomeの初期化
+	skydome_->Initialize(modelSkydome_, &camera_);
+
+	// playerの生成
+	player_ = new Player();
+
+	// playerの初期化
+	player_->Initialize(modelPlayer_, &camera_);
+
+	//// 3dモデルの生成
 
 	// カメラの初期化
 	camera_.Initialize();
@@ -13,23 +31,13 @@ void GameScene::Initialize() {
 	// デバックカメラの生成
 	debugCamera_ = new DebugCamera(1280, 720);
 
-	skydome_ = new SkyDome();
-
-	player_ = new Player();
-
-	skydome_->Initialize(&camera_);
-
-	playerModel_ = Model::Create();
-
-	player_->Initialize(playerModel_, 0, &camera_);
-
 	// 要素数
 	const uint32_t kNumBlockVertical = 10;   // 縦
 	const uint32_t kNumBlockHorizontal = 20; // 横
 
 	// ブロック1個分の幅
-	const float kBlockWidth = 2.0f;  // 縦
-	const float kBlockHeight = 2.0f; // 横
+	const float kBlockWidth = 1.0f;  // 縦
+	const float kBlockHeight = 1.0f; // 横
 
 	// 要素数を変更する
 	worldTransformBlocks_.resize(kNumBlockVertical);
@@ -42,10 +50,18 @@ void GameScene::Initialize() {
 	for (uint32_t i = 0; i < kNumBlockVertical; i++) {
 		for (uint32_t j = 0; j < kNumBlockHorizontal; j++) {
 			if ((j % 2 == 0 && i % 2 == 0) || (j % 2 == 1 && i % 2 == 1)) {
-				worldTransformBlocks_[i][j] = new WorldTransform();             // ワールドトランスフォームの生成
-				worldTransformBlocks_[i][j]->Initialize();                      // ワールドトランスフォームの初期化
-				worldTransformBlocks_[i][j]->translation_.x = kBlockWidth * j;  // x座標
-				worldTransformBlocks_[i][j]->translation_.y = kBlockHeight * i; // y座標
+
+				// ワールドトランスフォームの生成
+				worldTransformBlocks_[i][j] = new WorldTransform();
+
+				// ワールドトランスフォームの初期化
+				worldTransformBlocks_[i][j]->Initialize();
+
+				// x座標
+				worldTransformBlocks_[i][j]->translation_.x = kBlockWidth * j;
+
+				// y座標
+				worldTransformBlocks_[i][j]->translation_.y = kBlockHeight * i;
 			}
 		}
 	}
@@ -55,6 +71,21 @@ GameScene::~GameScene() {
 	// モデルの解放
 	delete modelBlock_;
 	modelBlock_ = nullptr;
+
+	// skydomeの解放
+	delete modelSkydome_;
+	modelSkydome_ = nullptr;
+
+	delete skydome_;
+	skydome_ = nullptr;
+
+	// モデルplayerの開放
+	delete modelPlayer_;
+	modelPlayer_ = nullptr;
+
+	// playerの開放
+	delete player_;
+	player_ = nullptr;
 
 	// 箱の解放
 	for (std::vector<WorldTransform*>& worldTransformBlockLine : worldTransformBlocks_) {
@@ -67,9 +98,6 @@ GameScene::~GameScene() {
 	// デバックカメラの解放
 	delete debugCamera_;
 	debugCamera_ = nullptr;
-
-	delete skydome_;
-	delete player_;
 }
 
 void GameScene::Update() {
@@ -88,6 +116,12 @@ void GameScene::Update() {
 			worldTransformBlock->TransferMatrix();
 		}
 	}
+
+	// skydomeのUPdate
+	skydome_->Update();
+
+	// playerのUPdate
+	player_->Update();
 
 	// デバックカメラの更新
 	debugCamera_->Update();
@@ -110,12 +144,10 @@ void GameScene::Update() {
 		// ビュープロダクション行列の更新と転送
 		camera_.UpdateMatrix();
 	}
-
-	skydome_->Update();
-	player_->Update();
 }
 
 void GameScene::Draw() {
+
 	// DirectXCommonインスタンスの取得
 	DirectXCommon* dxCommon = DirectXCommon::GetInstance();
 
@@ -134,6 +166,7 @@ void GameScene::Draw() {
 	}
 
 	skydome_->Draw();
+
 	player_->Draw();
 
 	// 3Dモデルの描画後処理
