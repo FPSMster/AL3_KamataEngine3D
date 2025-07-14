@@ -21,8 +21,12 @@ void GameScene::Initialize() {
 	// playerの生成
 	player_ = new Player();
 
+	// 座標をマップチップ番号で指定
+	Vector3 playerPosition = mapChipField_->GetMapChippositionByIndex(1, 18);
+
+
 	// playerの初期化
-	player_->Initialize(modelPlayer_, &camera_);
+	player_->Initialize(modelPlayer_, &camera_,playerPosition);
 
 	//// 3dモデルの生成
 
@@ -34,6 +38,8 @@ void GameScene::Initialize() {
 
 	// デバックカメラの生成
 	debugCamera_ = new DebugCamera(1280, 720);
+
+	
 
 	//// 要素数
 	//const uint32_t kNumBlockVertical = 10;   // 縦
