@@ -39,6 +39,16 @@ void GameScene::Initialize() {
 	// デバックカメラの生成
 	debugCamera_ = new DebugCamera(1280, 720);
 
+	//カメラコントローラーの生成
+	cameraController_ = new CameraController();
+	cameraController_->Initialize();
+	cameraController_->setTarget(player_);
+	cameraController_->Reset();
+
+	// 移動範囲の指定
+	CameraController::Rect cameraArea = {12.0f, 100 - 12.0f, 6.0f, 6.0f};
+	cameraController_->SetMovableArea(cameraArea);
+
 	
 
 	//// 要素数
@@ -140,6 +150,9 @@ void GameScene::Update() {
 
 	// デバックカメラの更新
 	debugCamera_->Update();
+
+	cameraController_->Update();
+
 #ifdef _DEBUG
 	if (Input::GetInstance()->TriggerKey(DIK_D)) {
 		isDebugCameraActive_ = !isDebugCameraActive_; // デバックカメラの有効無効を切り替え
@@ -158,6 +171,10 @@ void GameScene::Update() {
 	} else {
 		// ビュープロダクション行列の更新と転送
 		camera_.UpdateMatrix();
+		camera_.matView = cameraController_->GetViewProjection().matView;
+		camera_.matProjection = cameraController_->GetViewProjection().matProjection;
+
+		camera_.TransferMatrix();
 	}
 }
 

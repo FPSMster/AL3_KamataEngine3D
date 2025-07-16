@@ -39,7 +39,11 @@ public:
 
 	static inline const float kLimitFallSpeed = 0.3f;
 	
-	static inline const float kJumpAcceLeration = 0.5f;
+	static inline const float kJumpAcceLeration = 1.0f;
+
+	const KamataEngine::WorldTransform& GetWorldTransform() const { return worldTransform_; }
+
+	const KamataEngine::Vector3& GetVelocity() const { return velocity_; }
 
 	LRDirection lrDrirection_ = LRDirection::kRigth;
 
