@@ -1,6 +1,7 @@
 #pragma once
 #include "KamataEngine.h"
 
+class MapChipField;
 
 class Player {
 public:
@@ -8,6 +9,23 @@ public:
 	enum class LRDirection {
 		kRigth,
 		kLeft,
+	};
+
+	// マップチップの当たり判定情報
+	struct CollisionMapInfo {
+		bool ceiling = false;
+		bool landing = false;
+		bool hitWall = false;
+		KamataEngine::Vector3 move;
+	};
+
+	enum Corner {
+		kRightBottom,
+		kLeftBottom,
+		kRightTop,
+		kLeftTop,
+
+		kNumCorner
 	};
 
 	KamataEngine::Vector3 velocity_ = {};
@@ -20,6 +38,8 @@ public:
 
 	// 描画
 	void Draw();
+
+	void SetMapChipField(MapChipField* mapChipField) { mapChipField_ = mapChipField; }
 
 	static inline const float kAccleration = 0.1f;
 
@@ -41,11 +61,36 @@ public:
 	
 	static inline const float kJumpAcceLeration = 1.0f;
 
+	static inline const float kWidth = 0.8f;
+	static inline const float kHeight = 0.8f;
+	
+	// 1移動入力
+	void InputMove();
+
+	// 2マップ衝突判定
+	void CheckMapCollision(CollisionMapInfo& info);
+
+	// マップ衝突判定 上
+	void CheckMapCollisionUp(CollisionMapInfo& info);
+
+	//3判定結果を反映して移動させる
+	void CheckMapMove(const CollisionMapInfo& info);
+
+	//4天井に接触している場合の処理
+	void CheckMapCeiling(const CollisionMapInfo& info);
+
+	//指定された角の座標計算
+	KamataEngine::Vector3 CornerPosition(const KamataEngine::Vector3& center, Corner corner);
+
+	void AnimateTurn();
+
 	const KamataEngine::WorldTransform& GetWorldTransform() const { return worldTransform_; }
 
 	const KamataEngine::Vector3& GetVelocity() const { return velocity_; }
 
 	LRDirection lrDrirection_ = LRDirection::kRigth;
+
+	static inline const float kBlank = 0.1f;
 
 private:
 	// ワールド変換データ
@@ -55,4 +100,7 @@ private:
 	KamataEngine::Model* model_ = nullptr;
 
 	KamataEngine::Camera* camera_ = nullptr;
+
+	//マップチップによるフィールド
+	MapChipField* mapChipField_ = nullptr;
 };

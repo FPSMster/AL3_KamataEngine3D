@@ -22,7 +22,28 @@ public:
 	static inline const uint32_t kNumBlockVirtical = 20;
 	static inline const uint32_t kNumBlockHorizontal = 100;
 
+	//マップチップデータ
 	MapChipData mapChipData_;
+
+	//インデックスセット
+	struct IndexSet {
+		uint32_t xIndex;
+		uint32_t yIndex;
+	};
+
+	//座標からマップチップ番号を計算
+	IndexSet GetMapChipIndexSetByPosition(const KamataEngine::Vector3& position);
+
+	//範囲矩形
+	struct Rect {
+		float left;
+		float right;
+		float bottom;
+		float top;
+	};
+
+	//ブロックの範囲取得関数
+	Rect GetRectByIndex(uint32_t xIndex, uint32_t yIndex);
 
 	void ResetMapChipData();
 

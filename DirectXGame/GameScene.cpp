@@ -24,9 +24,9 @@ void GameScene::Initialize() {
 	// 座標をマップチップ番号で指定
 	Vector3 playerPosition = mapChipField_->GetMapChippositionByIndex(1, 18);
 
-
 	// playerの初期化
 	player_->Initialize(modelPlayer_, &camera_,playerPosition);
+
 
 	//// 3dモデルの生成
 
@@ -35,6 +35,8 @@ void GameScene::Initialize() {
 
 	// カメラの初期化
 	camera_.Initialize();
+
+	player_->SetMapChipField(mapChipField_);
 
 	// デバックカメラの生成
 	debugCamera_ = new DebugCamera(1280, 720);
