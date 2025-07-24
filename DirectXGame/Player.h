@@ -73,6 +73,9 @@ public:
 	// マップ衝突判定 上
 	void CheckMapCollisionUp(CollisionMapInfo& info);
 
+	//マップ衝突判定　下
+	void CheckMapCollisionDown(CollisionMapInfo& info);
+
 	//3判定結果を反映して移動させる
 	void CheckMapMove(const CollisionMapInfo& info);
 

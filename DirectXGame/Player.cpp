@@ -145,11 +145,12 @@ void Player::InputMove()
 // 2マップ衝突判定
 void Player::CheckMapCollision(CollisionMapInfo& info) { 
 	CheckMapCollisionUp(info); 
-	/*CheckMapCollisionDown(info); 
-	CheckMapCollisionRight(info); 
-	CheckMapCollisionLeft(info); */
+	CheckMapCollisionDown(info); 
+	//CheckMapCollisionRight(info); 
+	//CheckMapCollisionLeft(info); 
 }
 
+//マップ衝突判定　上
 void Player::CheckMapCollisionUp(CollisionMapInfo& info) {
 	
 	//上昇あり？
@@ -189,6 +190,49 @@ void Player::CheckMapCollisionUp(CollisionMapInfo& info) {
 		info.move.y=std::max(0.0f,rect.bottom-worldTransform_.translation_.y-(kHeight/2.0f+kBlank));
 		//天井に当たったことを記録する
 		info.ceiling=true;
+	}
+}
+
+//マップ衝突判定　下
+void Player::CheckMapCollisionDown(CollisionMapInfo& info) {
+
+	// 下降あり？
+	if (info.move.y >= 0) {
+		return;
+	}
+
+	// 移動後の4つの角の座標
+	std::array<Vector3, kNumCorner> positionNew;
+
+	for (uint32_t i = 0; i < positionNew.size(); i++) {
+		positionNew[i] = CornerPosition(worldTransform_.translation_ + info.move, static_cast<Corner>(i));
+	}
+
+	MapChipType mapChipType;
+	// 真下の当たり判定
+	bool hit = false;
+	// 左下の判定
+	MapChipField::IndexSet indexSet;
+	indexSet = mapChipField_->GetMapChipIndexSetByPosition(positionNew[kLeftBottom]);
+	mapChipType = mapChipField_->GetmapChiptypeByIndex(indexSet.xIndex, indexSet.yIndex);
+	if (mapChipType == MapChipType::kBlock) {
+		hit = true;
+	}
+	// 右下の判定
+	indexSet = mapChipField_->GetMapChipIndexSetByPosition(positionNew[kRightBottom]);
+	mapChipType = mapChipField_->GetmapChiptypeByIndex(indexSet.xIndex, indexSet.yIndex);
+	if (mapChipType == MapChipType::kBlock) {
+		hit = true;
+	}
+
+	if (hit) {
+		// めり込みを排除する方向に移動量を設定する
+		indexSet = mapChipField_->GetMapChipIndexSetByPosition(worldTransform_.translation_ + info.move + KamataEngine::Vector3(0, kHeight / 2.0f, 0));
+		// めり込み先にブロックがあるか
+		MapChipField::Rect rect = mapChipField_->GetRectByIndex(indexSet.xIndex, indexSet.yIndex);
+		info.move.y = std::max(0.0f, rect.bottom - worldTransform_.translation_.y - (kHeight / 2.0f + kBlank));
+		// 天井に当たったことを記録する
+		info.ceiling = true;
 	}
 }
 
