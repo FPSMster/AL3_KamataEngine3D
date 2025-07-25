@@ -32,7 +32,9 @@ void GameScene::Initialize() {
 	//enemy の生成
 	enemy_ = new Enemy();
 
-	//enemyの場所
+	// enemyの場所
+	Vector3 enemyPosition = mapChipField_->GetMapChippositionByIndex(15, 18);
+	enemy_->Initialize(modelEnemy_, &camera_, enemyPosition);
 
 	//// 3dモデルの生成
 
