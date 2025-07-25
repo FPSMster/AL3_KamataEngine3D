@@ -126,6 +126,7 @@ private:
 	// モデル
 	KamataEngine::Model* model_ = nullptr;
 
+	//カメラ
 	KamataEngine::Camera* camera_ = nullptr;
 
 	//マップチップによるフィールド

@@ -5,6 +5,7 @@
 #include <vector>
 #include "MapChipField.h"
 #include "CameraController.h"
+#include"Enemy.h"
 
 class GameScene {
 public:
@@ -54,4 +55,10 @@ public:
 
 	// カメラコントローラー
 	CameraController* cameraController_ = nullptr;
+
+	//enemy
+	Enemy* enemy_ = nullptr;
+
+	//enemy3Dモデル
+	KamataEngine::Model* modelEnemy_ = nullptr;
 };
