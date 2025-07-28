@@ -51,7 +51,7 @@ public:
 
 	MapChipType GetmapChiptypeByIndex(uint32_t xIndex, uint32_t yIndex);
 
-	KamataEngine::Vector3 GetMapChippositionByIndex(uint32_t xIndex, uint32_t yIndex);
+	KamataEngine::Vector3 GetMapChipPositionByIndex(uint32_t xIndex, uint32_t yIndex);
 
 	uint32_t GetNumBlockVirtical() const { return kNumBlockVirtical; };
 	uint32_t GetNumBlockHorizontal() const { return kNumBlockHorizontal; };

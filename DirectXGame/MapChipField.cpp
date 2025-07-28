@@ -22,7 +22,7 @@ MapChipField::IndexSet MapChipField::GetMapChipIndexSetByPosition(const KamataEn
 
 MapChipField::Rect MapChipField::GetRectByIndex(uint32_t xIndex, uint32_t yIndex) {
 	//指定ブロックの中心座標を取得する
-	KamataEngine::Vector3 center = GetMapChippositionByIndex(xIndex, yIndex);
+	KamataEngine::Vector3 center = GetMapChipPositionByIndex(xIndex, yIndex);
 
 	Rect rect;
 	rect.left = center.x - kBlockWidth / 2.0f;
@@ -93,7 +93,7 @@ MapChipType MapChipField::GetmapChiptypeByIndex(uint32_t xIndex, uint32_t yIndex
 	return mapChipData_.data[yIndex][xIndex];
 }
 
-KamataEngine::Vector3 MapChipField::GetMapChippositionByIndex(uint32_t xIndex, uint32_t yIndex) {
+KamataEngine::Vector3 MapChipField::GetMapChipPositionByIndex(uint32_t xIndex, uint32_t yIndex) {
 
 	return KamataEngine::Vector3(kBlockWidth * xIndex, kBlockHeight * (kNumBlockVirtical - 1 - yIndex), 0);
 }

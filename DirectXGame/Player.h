@@ -1,7 +1,9 @@
 #pragma once
 #include "KamataEngine.h"
+#include "MeMath.h"
 
 class MapChipField;
+class Enemy;
 
 class Player {
 public:
@@ -118,6 +120,15 @@ public:
 
 	//壁の速度減速率
 	static inline const float kAttenuationWall = 0.5f;
+
+	//ワールド座標を取得
+	KamataEngine::Vector3 GetWorldPosition();
+
+	//AABBを取得
+	AABB GetAABB();
+
+	// 衝突応答
+	void OnCollision(const Enemy*enemy);
 
 private:
 	// ワールド変換データ

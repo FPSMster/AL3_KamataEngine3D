@@ -51,14 +51,18 @@ public:
 	// プレイヤー3Dモデル
 	KamataEngine::Model* modelPlayer_ = nullptr;
 
+	//player
 	Player* player_ = nullptr;
 
 	// カメラコントローラー
 	CameraController* cameraController_ = nullptr;
 
 	//enemy
-	Enemy* enemy_ = nullptr;
+	std::list<Enemy*> enemies_;
 
 	//enemy3Dモデル
 	KamataEngine::Model* modelEnemy_ = nullptr;
+
+	//全ての当たり判定を行う
+	void CheckAllCollisions();
 };

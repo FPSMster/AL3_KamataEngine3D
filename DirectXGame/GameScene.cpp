@@ -24,17 +24,22 @@ void GameScene::Initialize() {
 	player_ = new Player();
 
 	// 座標をマップチップ番号で指定
-	Vector3 playerPosition = mapChipField_->GetMapChippositionByIndex(1, 18);
+	Vector3 playerPosition = mapChipField_->GetMapChipPositionByIndex(1, 18);
 
 	// playerの初期化
 	player_->Initialize(modelPlayer_, &camera_,playerPosition);
 
-	//enemy の生成
-	enemy_ = new Enemy();
+	//enemy
+	for (uint32_t i = 0; i < 5; i++) {
+		// enemy の生成
+		Enemy* newEnemy = new Enemy();
+		// enemyの場所
+		Vector3 enemyPosition = mapChipField_->GetMapChipPositionByIndex(10 + i, 18);
+		newEnemy->Initialize(modelEnemy_, &camera_, enemyPosition);
 
-	// enemyの場所
-	Vector3 enemyPosition = mapChipField_->GetMapChippositionByIndex(15, 18);
-	enemy_->Initialize(modelEnemy_, &camera_, enemyPosition);
+		enemies_.push_back(newEnemy);
+	}
+
 
 	//// 3dモデルの生成
 
@@ -124,8 +129,9 @@ GameScene::~GameScene() {
 	delete mapChipField_;
 
 	//enemyの解放
-	delete enemy_;
-	enemy_ = nullptr;
+	for (Enemy* enemy : enemies_) {
+		delete enemy;
+	}
 
 	// 箱の解放
 	for (std::vector<WorldTransform*>& worldTransformBlockLine : worldTransformBlocks_) {
@@ -167,7 +173,13 @@ void GameScene::Update() {
 
 	cameraController_->Update();
 
-	enemy_->Update();
+	//enemyの更新
+	for (Enemy* enemy : enemies_) {
+		enemy->Update();
+	}
+
+	//全ての当たり判定を行う
+	CheckAllCollisions();
 
 #ifdef _DEBUG
 	if (Input::GetInstance()->TriggerKey(DIK_D)) {
@@ -217,7 +229,11 @@ void GameScene::Draw() {
 
 	player_->Draw();
 
-	enemy_->Draw();
+	//enemyの描画
+	for (Enemy* enemy : enemies_) {
+		enemy->Draw();
+	}
+	
 
 	// 3Dモデルの描画後処理
 	Model::PostDraw();
@@ -238,9 +254,32 @@ void GameScene::GenerateBlocks() {
 				    WorldTransform* worldTransform = new WorldTransform();
 				    worldTransform->Initialize();
 				    worldTransformBlocks_[i][j] = worldTransform;
-				    worldTransformBlocks_[i][j]->translation_ = mapChipField_->GetMapChippositionByIndex(j, i);
+				    worldTransformBlocks_[i][j]->translation_ = mapChipField_->GetMapChipPositionByIndex(j, i);
 			    }
 			}
 		}
+}
+
+void GameScene::CheckAllCollisions() {
+	//判定対象1と2の座標
+	AABB aabb1, aabb2;
+
+	//自キャラの座標
+	aabb1 = player_->GetAABB();
+
+	//自キャラと散弾全ての当たり判定
+	for (Enemy* enemy : enemies_) {
+		//散弾の座標
+		aabb2 = enemy->GetAABB();
+
+		//AABB同士の交差判定
+		if (IsCollision(aabb1, aabb2)) {
+			//自キャラの衝突時間数を呼び出す
+			player_->OnCollision(enemy);
+			//敵弾の衝突時のコールバックを呼び出す
+			enemy->OnCollision(player_);
+		}
+	}
+	
 }
 
