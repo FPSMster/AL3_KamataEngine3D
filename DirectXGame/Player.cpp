@@ -1,10 +1,10 @@
 #define NOMINMAX
 #include "Player.h"
 #include <cassert>
-#include"MeMath.h"
-#include<numbers>
-#include<algorithm>
-#include"MapChipField.h"
+#include "MeMath.h"
+#include <numbers>
+#include <algorithm>
+#include "MapChipField.h"
 
 using namespace KamataEngine;
 using namespace MathUtility;
