@@ -6,6 +6,7 @@
 #include "MapChipField.h"
 #include "CameraController.h"
 #include "Enemy.h"
+#include "DeathParticles.h"
 
 class GameScene {
 public:
@@ -62,6 +63,12 @@ public:
 
 	//enemy3Dモデル
 	KamataEngine::Model* modelEnemy_ = nullptr;
+
+	//DeathParticles
+	DeathParticles* deathParticles_ = nullptr;
+
+	//パーティクルモデル
+	KamataEngine::Model* modelDeathParticles_ = nullptr;
 
 	//全ての当たり判定を行う
 	void CheckAllCollisions();

@@ -19,6 +19,8 @@ public:
 
 	std::array<KamataEngine::WorldTransform, kNumParticles> worldTransforms_;
 
+	
+
 private:
 	// ワールド変換データ
 	KamataEngine::WorldTransform worldTransform_;

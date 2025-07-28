@@ -16,8 +16,8 @@ void DeathParticles::Initialize(KamataEngine::Model* model, KamataEngine::Camera
 	worldTransform_.rotation_.y = std::numbers::pi_v<float> / 2.0f;
 
 	for (WorldTransform& worldTransform : worldTransforms_) {
-		worldTransform_.Initialize();
-		worldTransform_.translation_ = position;
+		worldTransform.Initialize();
+		worldTransform.translation_ = position;
 	}
 
 }
