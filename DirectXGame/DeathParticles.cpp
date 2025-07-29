@@ -67,10 +67,7 @@ void DeathParticles::Update() {
 }
 
 void DeathParticles::Draw() {
-	for (WorldTransform& worldTransform : worldTransforms_) {
-		model_->Draw(worldTransform, *camera_); 
-	}
-
+	
 	//終了なら何もしない
 	if (isFinished_) {
 		return;

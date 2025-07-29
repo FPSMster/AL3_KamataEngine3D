@@ -21,7 +21,7 @@ public:
 	std::array<KamataEngine::WorldTransform, kNumParticles> worldTransforms_;
 
 	//存続時間
-	static inline const float kDuration = 0.2f;
+	static inline const float kDuration = 0.8f;
 
 	//移動の速さ
 	static inline const float kSpeed = 0.1f;
