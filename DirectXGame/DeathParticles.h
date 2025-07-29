@@ -1,6 +1,7 @@
 #pragma once
 #include "KamataEngine.h"
 #include <array>
+#include <numbers>
 
 class DeathParticles {
 public:
@@ -19,7 +20,26 @@ public:
 
 	std::array<KamataEngine::WorldTransform, kNumParticles> worldTransforms_;
 
+	//存続時間
+	static inline const float kDuration = 0.2f;
+
+	//移動の速さ
+	static inline const float kSpeed = 0.1f;
+
+	//分割した1個分の角度
+	static inline const float kAngleUint = 2.0f * std::numbers::pi_v<float> / kNumParticles;
+
+	//終了フラグ
+	bool isFinished_ = false;
 	
+	//経過時間カウント
+	float counter_ = 0.0f;
+
+	//色変更オブジェクト
+	KamataEngine::ObjectColor objectColor_;
+
+	//色の数値
+	KamataEngine::Vector4 color_;
 
 private:
 	// ワールド変換データ
