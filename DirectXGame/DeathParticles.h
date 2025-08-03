@@ -29,8 +29,7 @@ public:
 	//分割した1個分の角度
 	static inline const float kAngleUint = 2.0f * std::numbers::pi_v<float> / kNumParticles;
 
-	//終了フラグ
-	bool isFinished_ = false;
+	bool IsFinished() const { return isFinished_; }
 	
 	//経過時間カウント
 	float counter_ = 0.0f;
@@ -50,4 +49,7 @@ private:
 
 	// カメラ
 	KamataEngine::Camera* camera_ = nullptr;
+
+	// 終了フラグ
+	bool isFinished_ = false;
 };

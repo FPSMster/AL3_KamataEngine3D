@@ -10,6 +10,16 @@
 
 class GameScene {
 public:
+
+	//ゲームのフェーズ
+	enum class Phase {
+		kPlay, //ゲームプレイ
+		kDeath, //デス演出
+	};
+
+	//ゲームの現在フェーズ
+	Phase phase_;
+
 	// 初期化
 	void Initialize();
 
@@ -24,6 +34,8 @@ public:
 
 
 	void GenerateBlocks();
+
+	void ChangePhase();
 
 	// 3Dモデル
 	KamataEngine::Model* modelBlock_ = nullptr;
@@ -70,6 +82,12 @@ public:
 	//パーティクルモデル
 	KamataEngine::Model* modelDeathParticles_ = nullptr;
 
+	bool IsFinished() const { return finished; }
+
 	//全ての当たり判定を行う
 	void CheckAllCollisions();
+
+private:
+	// 終了フラグ
+	bool finished = false;
 };
