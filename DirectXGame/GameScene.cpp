@@ -253,7 +253,9 @@ void GameScene::Update() {
 
 		break;
 	}
-
+	if (deathParticles_ != nullptr && deathParticles_->IsFinished()) {
+		finished = true;
+	}
 }
 
 void GameScene::Draw() {
