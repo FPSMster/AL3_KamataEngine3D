@@ -9,6 +9,8 @@ TitleScene::~TitleScene() {
 
 	delete model_;
 	delete modelPlayer_;
+	//フェード
+	delete fade_;
 
 }
 
@@ -27,9 +29,35 @@ void TitleScene::Initialize() {
 	worldTransformPlayer_.scale_ = {10, 10, 10};
 	worldTransformPlayer_.translation_ = {0, -8, 0};
 	worldTransformPlayer_.rotation_.y = std::numbers::pi_v<float>;
+
+	fade_ = new Fade();
+	fade_->Initialize();
+
+	fade_->Start(Fade::Status::FadeIn, 1.0f);
 }
 
 void TitleScene::Update() {
+
+	switch (phase_) {
+	case TitleScene::Phase::kMain:
+		if (Input::GetInstance()->PushKey(DIK_SPACE)) {
+			phase_ = Phase::kFadeOut;
+			fade_->Start(Fade::Status::FadeOut, 1.0f);
+		}
+		break;
+	case TitleScene::Phase::kFadeIn:
+		fade_->Update();
+		if (fade_->IsFinished()) {
+			phase_ = Phase::kMain;
+		}
+		break;
+	case TitleScene::Phase::kFadeOut:
+		fade_->Update();
+		if (fade_->IsFinished()) {
+			finished_ = true;
+		}
+		break;
+	}
 
 	worldTransform_.matWorld_ = 
 		MakeAffineMatrix(worldTransform_.scale_,
@@ -41,13 +69,7 @@ void TitleScene::Update() {
 	rotate += 0.1f;
 
 	worldTransformPlayer_.rotation_.y = sin(rotate) + std::numbers::pi_v<float>;
-
-
-	if (Input::GetInstance()->PushKey(DIK_SPACE)) {
-		finished_ = true;
-	} 
-
-
+	
 }
 
 void TitleScene::Draw() {
@@ -57,6 +79,8 @@ void TitleScene::Draw() {
 
 	model_->Draw(worldTransform_, camera_);
 	modelPlayer_->Draw(worldTransformPlayer_, camera_);
+
+	fade_->Draw();
 }
 
 

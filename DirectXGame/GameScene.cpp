@@ -34,7 +34,7 @@ void GameScene::Initialize() {
 		// enemy の生成
 		Enemy* newEnemy = new Enemy();
 		// enemyの場所
-		Vector3 enemyPosition = mapChipField_->GetMapChipPositionByIndex(10 + i, 18);
+		Vector3 enemyPosition = mapChipField_->GetMapChipPositionByIndex(15 + i, 18);
 		newEnemy->Initialize(modelEnemy_, &camera_, enemyPosition);
 
 		enemies_.push_back(newEnemy);
@@ -65,6 +65,11 @@ void GameScene::Initialize() {
 
 	//ゲームプレイフェーズから開始
 	phase_ = Phase::kPlay;
+
+	fade_ = new Fade();
+	fade_->Initialize();
+
+	fade_->Start(Fade::Status::FadeIn, 1.0f);
 
 	//// 要素数
 	//const uint32_t kNumBlockVertical = 10;   // 縦
@@ -148,10 +153,14 @@ GameScene::~GameScene() {
 	// デバックカメラの解放
 	delete debugCamera_;
 	debugCamera_ = nullptr;
+
+	//フェードの解放
+	delete fade_;
 }
 
 void GameScene::Update() {
 	
+	fade_->Update();
 
 	switch (phase_) {
 	case GameScene::Phase::kPlay:
@@ -296,6 +305,8 @@ void GameScene::Draw() {
 
 	// 3Dモデルの描画後処理
 	Model::PostDraw();
+
+	fade_->Draw();
 }
 
 void GameScene::GenerateBlocks() { 
