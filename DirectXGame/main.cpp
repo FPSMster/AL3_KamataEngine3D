@@ -84,7 +84,7 @@ void DrawScene() {
 // Windowsアプリでのエントリーポイント(main関数)
 int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int) {
 	// エンジンの初期化
-	KamataEngine::Initialize(L"GC2C_04_クドウ_マコト_AL3");
+	KamataEngine::Initialize(L"SugoiMan");
 
 	// DirectXの機能取得
 	DirectXCommon* dxCommon = DirectXCommon::GetInstance();
